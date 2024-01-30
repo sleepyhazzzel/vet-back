@@ -28,6 +28,8 @@ const schema = new Schema({
   tokens: {
     type: [String]
   }
+}, {
+  versionKey: false
 })
 
 schema.pre('save', function (next) {

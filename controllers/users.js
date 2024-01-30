@@ -43,7 +43,8 @@ export const userLogin = async (req, res) => {
       message: '',
       result: {
         token,
-        email: req.user.email
+        email: req.user.email,
+        user_name: req.user.user_name
       }
     })
   } catch (error) {

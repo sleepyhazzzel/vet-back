@@ -19,6 +19,8 @@ const schema = new Schema({
     ref: 'pets',
     required: [true, '缺少寵物ID']
   }
+}, {
+  versionKey: false
 })
 
 export default model('appointments', schema)

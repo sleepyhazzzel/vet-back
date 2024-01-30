@@ -24,6 +24,8 @@ const schema = new Schema({
     type: ObjectId,
     ref: 'users'
   }
+}, {
+  versionKey: false
 })
 
 export default model('pets', schema)

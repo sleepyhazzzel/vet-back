@@ -22,6 +22,9 @@ const schema = new Schema({
   user_name: {
     type: String
   },
+  honorific: {
+    type: String
+  },
   national_id: {
     type: String,
     required: [true, '缺少使用者身分證字號'],
@@ -49,6 +52,8 @@ const schema = new Schema({
   tokens: {
     type: [String]
   }
+}, {
+  versionKey: false
 })
 
 // 密碼驗證
