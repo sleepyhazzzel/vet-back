@@ -36,12 +36,18 @@ export const addAdmin = async (req, res) => {
 
 export const getAll = async (req, res) => {
   try {
-    const admins = await Admin.find()
+    const admins = await Admin.find({}, 'account position createdAt')
+    const positions = ['獸醫師', '護理師', '助理']
     const result = admins
-      .map(admin => ({
-        account: admin.account,
-        position: admin.position
-      }))
+      .sort((a, b) => positions.indexOf(a.position) - positions.indexOf(b.position))
+      .map(admin => {
+        return {
+          _id: admin._id,
+          account: admin.account,
+          position: admin.position,
+          createdAt: admin.createdAt.toISOString().split('T')[0]
+        }
+      })
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
@@ -68,7 +74,8 @@ export const adminLogin = async (req, res) => {
         token,
         _id: req.user._id,
         account: req.user.account,
-        position: req.user.position
+        position: req.user.position,
+        createdAt: req.user.createdAt
       }
     })
   } catch (error) {
@@ -124,7 +131,8 @@ export const getProfile = async (req, res) => {
       message: '',
       result: {
         account: req.user.account,
-        position: req.user.position
+        position: req.user.position,
+        createdAt: req.user.createdAt
       }
     })
   } catch (error) {

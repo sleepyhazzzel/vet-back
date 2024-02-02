@@ -29,6 +29,7 @@ const schema = new Schema({
     type: [String]
   }
 }, {
+  timestamps: true,
   versionKey: false
 })
 
