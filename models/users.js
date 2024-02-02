@@ -1,4 +1,4 @@
-import { Schema, model, Error } from 'mongoose'
+import { Schema, model, ObjectId, Error } from 'mongoose'
 import taiwanIdValidator from 'taiwan-id-validator'
 import validator from 'validator'
 import bcrypt from 'bcrypt'
@@ -48,6 +48,10 @@ const schema = new Schema({
   },
   address: {
     type: String
+  },
+  pets: {
+    type: [ObjectId],
+    ref: 'pets'
   },
   tokens: {
     type: [String]
