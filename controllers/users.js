@@ -1,10 +1,10 @@
-import user from '../models/users.js'
+import User from '../models/users.js'
 import { StatusCodes } from 'http-status-codes'
 import jwt from 'jsonwebtoken'
 
 export const register = async (req, res) => {
   try {
-    await user.create(req.body)
+    await User.create(req.body)
     res.status(StatusCodes.OK).json({
       success: true,
       message: ''
@@ -110,5 +110,36 @@ export const getProfile = async (req, res) => {
       success: false,
       message: '未知錯誤'
     })
+  }
+}
+
+export const getAccount = async (req, res) => {
+  try {
+    const user = await User.findOne({ national_id: req.query.national_id })
+    if (!user) throw new Error('NOT FOUND')
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: '',
+      result: {
+        _id: user._id,
+        user_name: user.user_name,
+        national_id: user.national_id,
+        phone: user.phone,
+        honorific: user.honorific
+      }
+    })
+  } catch (error) {
+    console.log(error)
+    if (error.message === 'NOT FOUND') {
+      res.status(StatusCodes.NOT_FOUND).json({
+        success: false,
+        message: '查無此人'
+      })
+    } else {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: '未知錯誤'
+      })
+    }
   }
 }

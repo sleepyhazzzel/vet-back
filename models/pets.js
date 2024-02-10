@@ -1,19 +1,4 @@
 import { Schema, model, ObjectId } from 'mongoose'
-import Gender from '../enums/Gender'
-import Personality from '../enums/Personality'
-
-const ownerSchema = new Schema({
-  owner_id: {
-    type: ObjectId,
-    ref: 'users'
-  },
-  name: {
-    type: String
-  },
-  phone: {
-    type: String
-  }
-})
 
 const descriptionSchema = new Schema({
   date: {
@@ -26,37 +11,43 @@ const descriptionSchema = new Schema({
 })
 
 const schema = new Schema({
-  chip_id: {
-    type: Number,
-    unique: true
-  },
   name: {
     type: String
   },
   species: {
     type: String
   },
+  breed: {
+    type: String
+  },
   gender: {
-    type: Number,
-    default: Gender.FEMALE
+    type: String
   },
   weight: {
     type: Number
   },
   birth: {
-    type: Date
+    type: String
   },
   personality: {
-    type: Number,
-    default: Personality.GENTLE
+    type: String
+  },
+  chip_id: {
+    type: String,
+    unique: true
   },
   descriptions: {
     type: [descriptionSchema]
   },
   owner: {
-    type: ownerSchema
+    type: ObjectId,
+    ref: 'users'
+  },
+  image: {
+    type: String
   }
 }, {
+  timestamps: true,
   versionKey: false
 })
 
