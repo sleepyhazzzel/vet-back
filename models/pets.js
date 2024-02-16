@@ -2,8 +2,7 @@ import { Schema, model, ObjectId } from 'mongoose'
 
 const descriptionSchema = new Schema({
   date: {
-    type: Date,
-    default: Date.now
+    type: Date
   },
   description: {
     type: String
@@ -27,7 +26,7 @@ const schema = new Schema({
     type: Number
   },
   birth: {
-    type: String
+    type: Date
   },
   personality: {
     type: String
