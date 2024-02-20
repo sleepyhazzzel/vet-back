@@ -9,6 +9,13 @@ const schema = new Schema({
     type: String,
     required: [true, '缺少預約時段']
   },
+  doctor: {
+    type: ObjectId,
+    required: [true, '缺少醫生ID']
+  },
+  order: {
+    type: Number
+  },
   owner: {
     type: ObjectId,
     ref: 'users',

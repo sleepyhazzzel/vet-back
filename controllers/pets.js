@@ -4,9 +4,7 @@ import validator from 'validator'
 
 export const addPet = async (req, res) => {
   try {
-    console.log(req.file)
     req.body.image = req.file.path
-    console.log(req.body)
     const result = await Pet.create(req.body)
     res.status(StatusCodes.OK).json({
       success: true,
@@ -33,7 +31,7 @@ export const addPet = async (req, res) => {
 
 export const getAll = async (req, res) => {
   try {
-    const result = await Pet.find({}, '_id chip_id name species breed gender')
+    const result = await Pet.find({}, '_id chip_id image name species breed gender')
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
@@ -48,7 +46,7 @@ export const getAll = async (req, res) => {
   }
 }
 
-export const getPetProfile = async (req, res) => {
+export const getPet = async (req, res) => {
   try {
     const result = await Pet.findById(req.params.id)
     res.status(StatusCodes.OK).json({
@@ -65,7 +63,7 @@ export const getPetProfile = async (req, res) => {
   }
 }
 
-export const updatePet = async (req, res) => {
+export const editPet = async (req, res) => {
   try {
     console.log(req.body)
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
@@ -163,7 +161,15 @@ export const addDescription = async (req, res) => {
 export const editDescription = async (req, res) => {
   try {
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
-    await Pet.findOneAndUpdate({ _id: req.params.id, 'descriptions._id': req.body._id }, { $set: { 'descriptions.$': req.body } }).orFail(new Error('NOT FOUND'))
+    await Pet.findOneAndUpdate(
+      { _id: req.params.id, 'descriptions._id': req.params.did },
+      { $set: { 'descriptions.$': req.body } },
+      { new: true }
+    ).orFail(new Error('NOT FOUND'))
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: ''
+    })
   } catch (error) {
     if (error.name === 'CastError' || error.message === 'ID') {
       res.status(StatusCodes.BAD_REQUEST).json({
@@ -197,5 +203,36 @@ export const deleteDescription = async (req, res) => {
       success: false,
       message: '未知錯誤'
     })
+  }
+}
+
+export const getPets = async (req, res) => {
+  try {
+    const result = await Pet.find({ owner: req.params.id }, '_id name species breed')
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: '',
+      result
+    })
+  } catch (error) {
+    console.log(error)
+    if (error.name === 'CastError') {
+      res.status(StatusCodes.BAD_REQUEST).json({
+        success: false,
+        message: 'ID 格式錯誤'
+      })
+    } else if (error.name === 'ValidationError') {
+      const key = Object.keys(error.errors)[0]
+      const message = error.errors[key].message
+      res.status(StatusCodes.BAD_REQUEST).json({
+        success: false,
+        message
+      })
+    } else {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: '未知錯誤'
+      })
+    }
   }
 }

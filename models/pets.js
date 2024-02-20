@@ -6,6 +6,9 @@ const descriptionSchema = new Schema({
   },
   description: {
     type: String
+  },
+  edit_by: {
+    type: String
   }
 })
 
