@@ -190,32 +190,32 @@ export const updateAdmin = async (req, res) => {
   }
 }
 
-export const getId = async (req, res) => {
-  try {
-    const admin = await Admin.findOne({ _id: req.user._id })
-    if (!admin) throw new Error('NOT FOUND')
-    res.status(StatusCodes.OK).json({
-      success: true,
-      message: '',
-      result: {
-        _id: req.user._id
-      }
-    })
-  } catch (error) {
-    console.log(error)
-    if (error.message === 'NOT FOUND') {
-      res.status(StatusCodes.NOT_FOUND).json({
-        success: false,
-        message: '查無管理員'
-      })
-    } else {
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        success: false,
-        message: '未知錯誤'
-      })
-    }
-  }
-}
+// export const getId = async (req, res) => {
+//   try {
+//     const admin = await Admin.findOne({ _id: req.user._id })
+//     if (!admin) throw new Error('NOT FOUND')
+//     res.status(StatusCodes.OK).json({
+//       success: true,
+//       message: '',
+//       result: {
+//         _id: req.user._id
+//       }
+//     })
+//   } catch (error) {
+//     console.log(error)
+//     if (error.message === 'NOT FOUND') {
+//       res.status(StatusCodes.NOT_FOUND).json({
+//         success: false,
+//         message: '查無管理員'
+//       })
+//     } else {
+//       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+//         success: false,
+//         message: '未知錯誤'
+//       })
+//     }
+//   }
+// }
 
 export const deleteAdmin = async (req, res) => {
   try {

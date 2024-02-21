@@ -38,14 +38,11 @@ export const userLogin = async (req, res) => {
     const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
     req.user.tokens.push(token)
     await req.user.save()
+    const result = await User.findById(req.user._id, '-password -tokens')
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
-      result: {
-        token,
-        email: req.user.email,
-        user_name: req.user.user_name
-      }
+      result
     })
   } catch (error) {
     console.log(error)
