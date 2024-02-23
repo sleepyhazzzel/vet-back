@@ -38,11 +38,19 @@ export const userLogin = async (req, res) => {
     const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
     req.user.tokens.push(token)
     await req.user.save()
-    const result = await User.findById(req.user._id, '-password -tokens')
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
-      result
+      result: {
+        token,
+        _id: req.user._id,
+        user_name: req.user.user_name,
+        honorific: req.user.honorific,
+        email: req.user.email,
+        national_id: req.user.national_id,
+        phone: req.user.phone,
+        address: req.user.address
+      }
     })
   } catch (error) {
     console.log(error)
@@ -62,6 +70,7 @@ export const userLogout = async (req, res) => {
       message: ''
     })
   } catch (error) {
+    console.log(error)
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: '未知錯誤'
@@ -82,6 +91,7 @@ export const extend = async (req, res) => {
       result: token
     })
   } catch (error) {
+    console.log(error)
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: '未知錯誤'
@@ -95,8 +105,10 @@ export const getProfile = async (req, res) => {
       success: true,
       message: '',
       result: {
-        email: req.user.email,
+        _id: req.user._id,
         user_name: req.user.user_name,
+        honorific: req.user.honorific,
+        email: req.user.email,
         national_id: req.user.national_id,
         phone: req.user.phone,
         address: req.user.address

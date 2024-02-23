@@ -130,6 +130,7 @@ export const getProfile = async (req, res) => {
       success: true,
       message: '',
       result: {
+        _id: req.user._id,
         account: req.user.account,
         position: req.user.position,
         createdAt: req.user.createdAt

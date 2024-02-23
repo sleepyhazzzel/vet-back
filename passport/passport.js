@@ -94,6 +94,7 @@ passport.use('jwt', new passportJWT.Strategy({
     return done(null, { user, token }, null)
     //
   } catch (error) {
+    console.log(error)
     if (error.message === 'EXPIRED') {
       return done(null, null, { message: 'JWT過期' })
     } else if (error.message === 'JWT') {

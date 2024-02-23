@@ -1,6 +1,7 @@
 import Pet from '../models/pets.js'
 import { StatusCodes } from 'http-status-codes'
 import validator from 'validator'
+// import { Types } from 'mongoose'
 
 export const addPet = async (req, res) => {
   try {
@@ -208,7 +209,12 @@ export const deleteDescription = async (req, res) => {
 
 export const getPets = async (req, res) => {
   try {
-    const result = await Pet.find({ owner: req.params.id }, '_id name species breed')
+    const result = await Pet.find({ owner: req.params.id }, '_id name species breed gender weight birth chip_id image')
+    // const result = pets.map((item) => {
+    //   item.birth = item.birth.toLocaleDateString('zh-TW')
+    //   return item
+    // })
+    console.log(result)
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
