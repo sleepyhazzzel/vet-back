@@ -182,3 +182,18 @@ export const getId = async (req, res) => {
     }
   }
 }
+
+export const editUser = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.params.id, req.body)
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: ''
+    })
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: '未知錯誤'
+    })
+  }
+}

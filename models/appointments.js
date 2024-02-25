@@ -16,6 +16,10 @@ const schema = new Schema({
   order: {
     type: Number
   },
+  status: {
+    type: Boolean,
+    default: false
+  },
   owner: {
     type: ObjectId,
     ref: 'users',

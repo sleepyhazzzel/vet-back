@@ -1,5 +1,6 @@
 import Appointment from '../models/appointments.js'
 import Pet from '../models/pets.js'
+import Admin from '../models/admins.js'
 import { StatusCodes } from 'http-status-codes'
 
 export const addAppointment = async (req, res) => {
@@ -98,7 +99,8 @@ export const deleteAppointment = async (req, res) => {
   try {
     await Appointment.findByIdAndDelete(req.params.id).orFail(new Error('NOT FOUND'))
     res.status(StatusCodes.OK).json({
-      success: true
+      success: true,
+      message: ''
     })
   } catch (error) {
     if (error.message === 'NOT FOUND') {
@@ -112,5 +114,27 @@ export const deleteAppointment = async (req, res) => {
         message: '未知錯誤'
       })
     }
+  }
+}
+
+export const getPetAppointments = async (req, res) => {
+  try {
+    const appointments = await Appointment.find({ pet: req.params.id })
+    const result = await Promise.all(appointments.map(async appointment => {
+      const doctor = await Admin.findById(appointment.doctor, 'account')
+      return {
+        ...appointment._doc,
+        doctor_name: doctor.account
+      }
+    }))
+    res.status(StatusCodes.OK).json({
+      success: true,
+      result
+    })
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: '未知錯誤'
+    })
   }
 }
