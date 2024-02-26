@@ -1,12 +1,14 @@
 import { Router } from 'express'
-import { addAppointment, getAppointments, getAppointOrder, deleteAppointment, getPetAppointments } from '../controllers/appointments.js'
+import { addAppointment, getAppointments, getAppointOrder, deleteAppointment, getPetAppointments, updateStatus, getAllDayAppointments } from '../controllers/appointments.js'
 
 const router = Router()
 
 router.post('/', addAppointment)
 router.get('/', getAppointments)
+router.get('/day', getAllDayAppointments)
 router.get('/order', getAppointOrder)
-router.delete('/:id', deleteAppointment)
 router.get('/:id', getPetAppointments)
+router.patch('/:id', updateStatus)
+router.delete('/:id', deleteAppointment)
 
 export default router

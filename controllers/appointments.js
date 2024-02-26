@@ -138,3 +138,60 @@ export const getPetAppointments = async (req, res) => {
     })
   }
 }
+
+export const updateStatus = async (req, res) => {
+  try {
+    await Appointment.findByIdAndUpdate(req.params.id, { status: req.body.status }).orFail(new Error('NOT FOUND'))
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: ''
+    })
+  } catch (error) {
+    if (error.message === 'NOT FOUND') {
+      res.status(StatusCodes.NOT_FOUND).json({
+        success: false,
+        message: '查無資料'
+      })
+    } else {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: '未知錯誤'
+      })
+    }
+  }
+}
+
+export const getAllDayAppointments = async (req, res) => {
+  try {
+    const { date, doctor } = req.query
+    // console.log(doctor)
+    const appointments = await Appointment.find({ date, doctor })
+    // console.log(appointments)
+    const total = [0, 0, 0]
+    appointments.forEach(appointment => {
+      if (appointment.time === '上午診') {
+        total[0]++
+      } else if (appointment.time === '下午診') {
+        total[1]++
+      } else if (appointment.time === '夜間診') {
+        total[2]++
+      }
+    })
+    // console.log(total)
+    // 超過不給預約
+    const result = total.map(time => {
+      return time > 1
+    })
+    // console.log(result)
+    res.status(StatusCodes.OK).json({
+      success: true,
+      result
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: '未知錯誤'
+    })
+  }
+}
