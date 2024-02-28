@@ -195,3 +195,99 @@ export const getAllDayAppointments = async (req, res) => {
     })
   }
 }
+
+export const getStatus = async (req, res) => {
+  try {
+    const today = new Date().toLocaleDateString('en-CA')
+    const hour = new Date().getHours()
+    let range = ''
+    if (hour <= 12) {
+      range = '上午診'
+    } else if (hour <= 17) {
+      range = '下午診'
+    } else {
+      range = '夜間診'
+    }
+    const maxOrder = await Appointment.aggregate([
+      // 只选择今天日期且status为true的预约
+      {
+        $match: {
+          date: today,
+          time: range,
+          status: true
+        }
+      },
+      // 对每个医生的预约进行分组，并找到每组中的最大order
+      {
+        $group: {
+          _id: '$doctor',
+          maxOrder: { $max: '$order' }
+        }
+      }
+    ])
+
+    const doctors = await Admin.aggregate([
+      {
+        $match: {
+          position: '獸醫師'
+        }
+      },
+      {
+        $project: {
+          _id: '$_id',
+          doctor_name: '$account'
+        }
+      }
+    ])
+    // console.log('maxOrder', maxOrder)
+    // console.log('doctor', doctors)
+
+    const result = doctors.map(doctor => {
+      return {
+        doctor_id: doctor._id,
+        doctor_name: doctor.doctor_name,
+        date: today,
+        time: range
+      }
+    })
+    // console.log('result', result)
+
+    // 如果沒資料跑迴圈放 status = 0
+    if (maxOrder.length === 0) {
+      for (let i = 0; i < 2; i++) {
+        result[i].status = 0
+      }
+    } else if (maxOrder.length === 1) {
+      maxOrder.forEach(item => {
+        result.forEach(doctor => {
+          if (item._id.toString() === doctor.doctor_id.toString()) {
+            doctor.status = item.maxOrder
+          } else {
+            doctor.status = 0
+          }
+        })
+      })
+    } else {
+      maxOrder.forEach(item => {
+        result.forEach(doctor => {
+          if (item._id.toString() === doctor.doctor_id.toString()) {
+            doctor.status = item.maxOrder
+          }
+        })
+      })
+    }
+
+    console.log('new result', result)
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      result
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: '未知錯誤'
+    })
+  }
+}
