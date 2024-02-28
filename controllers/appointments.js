@@ -276,9 +276,7 @@ export const getStatus = async (req, res) => {
         })
       })
     }
-
-    console.log('new result', result)
-
+    // console.log('new result', result)
     res.status(StatusCodes.OK).json({
       success: true,
       result
