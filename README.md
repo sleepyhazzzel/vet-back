@@ -1,15 +1,17 @@
 ## Veterinary Registration System - BackEnd (動物醫院預約掛號系統 - 後端)
-- Veterinary NoSQL database built with MongoDB
-- Using JSON Web Token (JWT) for Login Function
-- Image files uploaded to the free space Cloudinary
-- [前端往這 (FrontEnd Click Here ~ )](https://github.com/sleepyhazzzel/vet-front)
+- Veterinary NoSQL database built with <ins>MongoDB</ins>
+- Linking front and back end routes with <ins>Express</ins>
+- Using <ins>JSON Web Token (JWT)</ins> for Login Function
+- Image files uploaded to the free space <ins>Cloudinary</ins>
+- [FrontEnd Click Here ~ (前端往這)](https://github.com/sleepyhazzzel/vet-front)
 
 ---
 ### 🗂️ Database ERD
 ![](https://github.com/sleepyhazzzel/vet-back/blob/main/images/nosql_database.png)
 
+---
 ### 👉 Controllers Examples
-- Get the maximum number of the current reservation (取得目前最大掛號號碼)
+- Get the maximum order number of the current reservation (取得目前最大掛號號碼)
 ```javascript
 export const getAppointOrder = async (req, res) => {
   try {
