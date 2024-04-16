@@ -1,9 +1,9 @@
 ## Veterinary Registration System - BackEnd (動物醫院預約掛號系統 - 後端)
-- Veterinary NoSQL database built with <ins>MongoDB</ins>
-- Linking front and back end routes with <ins>Express</ins>
-- Using <ins>JSON Web Token (JWT)</ins> for Login Function
-- Image files uploaded to the free space <ins>Cloudinary</ins>
-- [FrontEnd Click Here ~ (前端往這)](https://github.com/sleepyhazzzel/vet-front)
+- Veterinary NoSQL database built with ***MongoDB***
+- Linking front and back end routes with ***Express***
+- Using ***JSON Web Token (JWT)*** for Login Function
+- Image files uploaded to the free space ***Cloudinary***
+- [FrontEnd Click Here ~ (前端點這)](https://github.com/sleepyhazzzel/vet-front)
 
 ---
 ### 🗂️ Database ERD
