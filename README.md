@@ -1,4 +1,4 @@
-## Veterinary Registration System - BackEnd (動物醫院預約掛號系統 - 後端)
+## Veterinary Hospital Registration System - BackEnd (動物醫院掛號系統 - 後端)
 - Veterinary NoSQL database built with ***MongoDB***
 - Linking front and back end routes with ***Express***
 - Using ***JSON Web Token (JWT)*** for Login Function
